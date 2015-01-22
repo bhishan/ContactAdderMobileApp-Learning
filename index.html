@@ -1,0 +1,64 @@
+<html>
+    <head>
+        <meta name = "viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width"/>
+        <title>Phonebook Application</title>
+        <link rel="stylesheet" href="css/jquery.mobile-1.3.2.css"/>
+        <script src = "js/jquery-1.10.2.min.js"></script>
+        <script src="js/jquery.mobile-1.3.2.min.js"></script>
+        <script src="cordova.js"></script> 
+        <script type="text/javascript">
+            document.addEventListener("deviceready", onDeviceReady, false);
+            function onDeviceReady(){
+                $(document).ready(function(){
+                    $('#saveBtn').bind('click',function(){
+                        saveContact();
+                    });
+                });
+            }
+            function saveContact(){
+                console.log("Getting contact information...");
+                var firstName = document.getElementById('firstName').value;
+                var lastName = document.getElementById('lastName').value;
+                var userEmail = document.getElementById('email').value;
+                var fullName = firstName + ' ' + lastName;
+                var note = document.getElementById('note').value;
+                var theContact = navigator.contacts.create({"displayName": fullName});
+                theContact.note = note;
+                var emails = [];
+                emails[0] = new ContactField('email', userEmail,false);
+                theContact.emails = emails;
+                theContact.save(onSaveSucess, onSaveError);
+            }
+            
+            function onSaveSucess(){
+                alert('The contact has been saved!!');
+            }
+            
+            function onSaveError(error){
+                alert('Error' + error.code);
+            }
+        </script>
+    </head>
+    <body>
+        <div data-role="page">
+            <div data-role="header">
+                <h1>Add Contact</h1> 
+            </div>
+            <div data-role="content">
+        <form>
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName"/>
+            <label for="lastName">Last Name</label>
+            <input type="text" id = "lastName"/>
+            <label for="email">Email</label>
+            <input type="text" id = "email"/>
+            <label for="note">Note</label>
+            <textarea id = "note"></textarea>
+            <input type="button" name = "save" id = "saveBtn" value= "Save Contact"/>
+            
+        </form>
+            </div>
+            <div data-role="footer"><h3>Copyright 2015 by Bhishan</h3></div>
+        </div>
+    </body>
+</html>
